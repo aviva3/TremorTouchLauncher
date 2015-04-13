@@ -3,22 +3,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="fill_parent"
+    <EditText
+        android:id="@+id/editInp"
+        android:layout_marginTop = "50dp"
+        android:layout_width="500dp"
         android:layout_height="50dp"
-        android:gravity="center"
-        android:text="[ TremorTouch Launcher ]" />
+        android:hint="@string/init_text"
+        android:inputType="text"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true" />
 
     <GridView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/grid_view"
+        android:layout_marginTop = "30dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:columnWidth="75dp"
         android:gravity="center"
         android:horizontalSpacing="10dp"
-        android:numColumns="4"
+        android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp" />
 
@@ -35,7 +40,7 @@
             android:columnWidth="75dp"
             android:gravity="center"
             android:horizontalSpacing="10dp"
-            android:numColumns="4"
+            android:numColumns="auto_fit"
             android:stretchMode="columnWidth"
             android:verticalSpacing="20dp" />
 

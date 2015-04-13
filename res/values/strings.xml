@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">TremorTouchLauncher</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="init_text">Search...</string>
     <string name="action_settings">Settings</string>
 
 </resources>

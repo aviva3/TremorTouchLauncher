@@ -12,21 +12,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class HomeActivity extends Activity{
 
 	private static final String LOG_TAG = "TremorTouchLauncher";
 
 	private static final HashSet<String> DEFAULT_DOCK_APPS = new HashSet<String>(Arrays.asList(
-			"Phone", "Browser", "People", "Messaging" ));
+			"Maps", "Chrome", "Facebook", "Messaging","Settings" ));
 	private ArrayList<LaunchableAppInfo> mApplications;
 	private ArrayList<LaunchableAppInfo> mDockedApplications;
 
@@ -36,10 +39,13 @@ public class HomeActivity extends Activity{
 		hideBars();
 		setContentView(R.layout.activity_home);
 		
+		//Prevent from keyboard to open on activity start
+		getWindow().setSoftInputMode(
+			    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		
 		loadApps();
         bindApps();
         bindDockedApps();
-
 	}
 
 	@Override
@@ -112,7 +118,7 @@ public class HomeActivity extends Activity{
         });
 
     }
-
+	
 	
 	private void hideBars(){
 		View decorView = getWindow().getDecorView();
@@ -133,17 +139,36 @@ public class HomeActivity extends Activity{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            LaunchableAppInfo app = getItem(position);
+            final LaunchableAppInfo app = getItem(position);
             Log.d(LOG_TAG, "Position " + position + ": " + app);
-            ImageView imageView;
-
-            if(convertView == null)
-                imageView = new ImageView(this.getContext());
-            else
-                imageView = (ImageView) convertView;
-
-            imageView.setImageDrawable(app.icon);
-            return imageView;
+            
+            convertView = getLayoutInflater().inflate(R.layout.app_button, null);
+            ImageView appIcon = (ImageView)convertView.findViewById(R.id.app_icon);
+            appIcon.setImageDrawable(app.icon);
+             
+            TextView appLabel = (TextView)convertView.findViewById(R.id.app_label);
+            appLabel.setTextColor(Color.WHITE);
+            appLabel.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            appLabel.setText(app.label);       
+            
+//            ImageView imageView;
+//
+//            if(convertView == null)
+//                imageView = new ImageView(this.getContext());
+//            else
+//                imageView = (ImageView) convertView;
+//
+//            imageView.setImageDrawable(app.icon);
+//            
+////            imageView.setOnClickListener(new OnClickListener() {
+////				
+////				@Override
+////				public void onClick(View v) {
+////	                startActivity(app.intent);
+////				}
+////			});
+//            return imageView;
+            return convertView;
         }
 
     }
