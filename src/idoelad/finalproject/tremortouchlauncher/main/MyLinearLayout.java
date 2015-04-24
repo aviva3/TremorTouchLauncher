@@ -1,10 +1,12 @@
-package idoelad.finalproject.tremortouchlauncher;
+package idoelad.finalproject.tremortouchlauncher.main;
 
 import android.content.Context;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -23,12 +25,11 @@ public class MyLinearLayout extends LinearLayout {
 		super(context,attrs,defStyle);
 	}
 
-
-
+	
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent e) {
 		Log.i(LOG_TAG, "Touch: REAL | T="+String.valueOf(e.getDownTime())+" | "+String.valueOf(e.getX())+","+String.valueOf(e.getRawY()));
-		e.setLocation(e.getX()+50, e.getY());
+		e.setLocation(e.getX(), e.getY());
 		Log.i(LOG_TAG, "Touch: FAKE |  T="+String.valueOf(e.getDownTime())+" | "+String.valueOf(e.getX())+","+String.valueOf(e.getRawY()));
 		Log.i(LOG_TAG,"----------------------------------------");
 		return super.dispatchTouchEvent(e);

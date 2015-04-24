@@ -1,24 +1,53 @@
-<idoelad.finalproject.tremortouchlauncher.MyLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<idoelad.finalproject.tremortouchlauncher.main.MyLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:imeOptions="flagNoExtractUi"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editInp"
-        android:layout_marginTop = "50dp"
-        android:layout_width="500dp"
-        android:layout_height="50dp"
-        android:hint="@string/init_text"
-        android:inputType="text"
-        android:layout_gravity="center_horizontal"
-        android:singleLine="true" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:padding="10dip" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="0dp"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/editInp"
+            android:layout_width="500dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="30dp"
+            android:hint="@string/init_text"
+            android:imeOptions="flagNoExtractUi"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:text="@string/btn_settings" />
+    </LinearLayout>
 
     <GridView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/grid_view"
-        android:layout_marginTop = "30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
         android:layout_weight="1"
         android:columnWidth="75dp"
         android:gravity="center"
@@ -52,4 +81,4 @@
             android:background="#555555" />
     </RelativeLayout>
 
-</idoelad.finalproject.tremortouchlauncher.MyLinearLayout>
+</idoelad.finalproject.tremortouchlauncher.main.MyLinearLayout>
