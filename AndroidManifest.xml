@@ -13,7 +13,8 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar" >
         <activity
             android:name=".main.HomeActivity"
             android:label="@string/app_name"
@@ -27,6 +28,21 @@
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        
+        <activity
+            android:name=".training.TestActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name=".training.ChooseTestActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name=".userparams.manual.ManualActivity"
+            android:label="@string/app_name" >
         </activity>
     </application>
 

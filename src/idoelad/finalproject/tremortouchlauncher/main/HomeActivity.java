@@ -1,16 +1,19 @@
 package idoelad.finalproject.tremortouchlauncher.main;
 
 import idoelad.finalproject.tremortouchlauncher.R;
+import idoelad.finalproject.tremortouchlauncher.fileshandlers.CirclesFilesHandler;
 import idoelad.finalproject.tremortouchlauncher.fileshandlers.UserParamsHandler;
+import idoelad.finalproject.tremortouchlauncher.training.ChooseTestActivity;
+import idoelad.finalproject.tremortouchlauncher.userparams.manual.ManualActivity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Logger;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -33,12 +36,14 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TextView;
 
 public class HomeActivity extends Activity{
 
 	private static final String LOG_TAG = "TremorTouchLauncher";
+	public static String APP_NAME;
 
 	private static final HashSet<String> DEFAULT_DOCK_APPS = new HashSet<String>(Arrays.asList(
 			"Maps", "Chrome", "Facebook", "Messaging","Settings" ));
@@ -48,6 +53,9 @@ public class HomeActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		String appName = getResources().getString(R.string.app_name);
+		APP_NAME = appName;
+		
 		hideBars();
 		setContentView(R.layout.activity_home);
 
@@ -75,10 +83,12 @@ public class HomeActivity extends Activity{
 					public boolean onMenuItemClick(MenuItem item) {
 						CharSequence title = item.getTitle();
 						if (title.equals(getResources().getString(R.string.settings_training))){
-							//TODO launch training app
+							Intent startTestActivityIntent = new Intent(HomeActivity.this, ChooseTestActivity.class);
+							startActivityForResult(startTestActivityIntent,0);
 						}
 						else if (title.equals(getResources().getString(R.string.settings_manual))){
-							//TODO launch manual adj.
+							Intent startManualActivityIntent = new Intent(HomeActivity.this, ManualActivity.class);
+							startActivityForResult(startManualActivityIntent,0);
 						}
 						return true;
 					}
@@ -88,16 +98,14 @@ public class HomeActivity extends Activity{
 			}
 		});
 
-		try {
-			UserParamsHandler.initUserParamsFiles();
-		} catch (IOException e) {
-			Log.e(LOG_TAG, "Unable to init user params: "+e.getMessage());
-		}
+		createResources();
+		loadInitUserParams();
 		
 		loadApps();
 		bindApps();
 		bindDockedApps();
 	}
+
 
 	@Override
 	protected void onResume() {
@@ -106,6 +114,48 @@ public class HomeActivity extends Activity{
 	}
 
 
+	private void createResources(){
+		//Create app folder
+		File extStore = Environment.getExternalStorageDirectory();
+		File appFolder = new File(extStore,HomeActivity.APP_NAME);
+		if (!appFolder.exists()){
+			appFolder.mkdir();
+		}
+		
+		//Create userParams
+		try {
+			UserParamsHandler.initUserParamsFiles(appFolder);
+		} catch (IOException e) {
+			Log.e(LOG_TAG, "Unable to init user params: "+e.getMessage());
+		}
+		
+		//Create training folder
+		File trainingFolder = new File(appFolder,"training");
+		if (!trainingFolder.exists()){
+			trainingFolder.mkdir();
+		}
+		
+		//Create circles
+		try {
+			CirclesFilesHandler.initCircles(trainingFolder);
+		} catch (IOException e) {
+			Log.e(LOG_TAG, "Unable to init circles: "+e.getMessage());
+		}
+	}
+	
+	private void loadInitUserParams() {
+		try {
+			UserParamsHolder.upBig = UserParamsHandler.loadUserParamsBig();
+			UserParamsHolder.upMulti = UserParamsHandler.loadUserParamsMulti();
+		} catch (IOException e) {
+			Log.e(LOG_TAG, "Error while loading user parameters: "+e.getMessage());
+			Toast.makeText(getApplicationContext(), "Error while loading user parameters", Toast.LENGTH_SHORT).show();
+			finish();
+		}
+
+		
+	}
+	
 	private void loadApps() {
 		PackageManager packManager = getPackageManager();
 
