@@ -1,18 +1,15 @@
-package idoelad.finalproject.tremortouchlauncher.main;
+package idoelad.finalproject.tremortouchlauncher.main.home;
 
-import idoelad.finalproject.tremortouchlauncher.userparams.bigtouch.BigTouch;
-import idoelad.finalproject.tremortouchlauncher.userparams.multitouch.MultiTouch;
-import idoelad.finalproject.tremortouchlauncher.userparams.touch.Circle;
-import idoelad.finalproject.tremortouchlauncher.userparams.touch.Point;
-import idoelad.finalproject.tremortouchlauncher.userparams.touch.Touch;
+import idoelad.finalproject.core.bigtouch.BigTouch;
+import idoelad.finalproject.core.multitouch.MultiTouch;
+import idoelad.finalproject.core.touch.Circle;
+import idoelad.finalproject.core.touch.Point;
+import idoelad.finalproject.core.touch.Touch;
+import idoelad.finalproject.core.userparams.UserParamsHolder;
 
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -26,8 +23,9 @@ public class MyLinearLayout extends LinearLayout {
 	private static boolean isSyntetic = false;
 	private static boolean isAfterUp = false;
 	private Circle guessCircle;
+	private long firstEventTime;
 
-	private boolean drawGuess;
+
 
 	public MyLinearLayout(Context context) {
 		super(context);
@@ -37,6 +35,9 @@ public class MyLinearLayout extends LinearLayout {
 		super(context,attrs);
 	}
 
+	
+    /////// CORE ///////
+	
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent e) {
 		Log.i(LOG_TAG,"TOUCH | "+getTouchType(e.getAction()));
@@ -44,6 +45,7 @@ public class MyLinearLayout extends LinearLayout {
 		if (MotionEvent.ACTION_DOWN == e.getAction()) {
 			if (!isSyntetic){
 				currTouches = new ArrayList<Touch>();
+				firstEventTime = e.getEventTime();
 				currTouches.add(eventToTouch(e));
 				return true;
 			}
@@ -60,12 +62,10 @@ public class MyLinearLayout extends LinearLayout {
 				//Create touch (DOWN) according to user's params
 				isSyntetic = true;
 				guessCircle = createSyntheticTouch();
-				drawGuess = true;
 				
 				//Add "UP" event
 				isAfterUp = true;
 				simulateAction((float)guessCircle.getCenter().getX(), (float)guessCircle.getCenter().getX(), MotionEvent.ACTION_UP); //FIXME casting
-				drawGuess = false;
 				return true;
 			}
 
@@ -112,7 +112,7 @@ public class MyLinearLayout extends LinearLayout {
 		int pointerIndex = e.getActionIndex();
 		int pointerId = e.getPointerId(pointerIndex)+1; //TODO test 0/1
 		return new Touch(new Point(e.getX(), e.getY()), action, e.getSize(),
-				e.getPressure(), e.getEventTime(), count, pointerId); 
+				e.getPressure(), (e.getEventTime() - firstEventTime), count, pointerId); 
 	}
 
 	private String getTouchType(int action){

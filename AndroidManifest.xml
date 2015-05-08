@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >
         <activity
-            android:name=".main.HomeActivity"
+            android:name="idoelad.finalproject.tremortouchlauncher.main.home.HomeActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:stateNotNeeded="true"
@@ -41,7 +41,7 @@
         </activity>
         
         <activity
-            android:name=".userparams.manual.ManualActivity"
+            android:name="idoelad.finalproject.tremortouchlauncher.main.manual.ManualActivity"
             android:label="@string/app_name" >
         </activity>
     </application>

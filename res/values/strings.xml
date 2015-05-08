@@ -4,8 +4,8 @@
     <string name="app_name">TremorTouchLauncher</string>
     <string name="init_text">Search...</string>
     <string name="action_settings">Settings</string>
-    <string name="settings_training">Training</string>
-    <string name="settings_manual">Manual adjusments</string>
+    <string name="settings_training">Auto Calibration</string>
+    <string name="settings_manual">Manual Calibration</string>
     <string name="btn_settings">Settings</string>
     <string name="writeResults">Use training results</string>
     <string name="shape_number_lable">Shape number:</string>

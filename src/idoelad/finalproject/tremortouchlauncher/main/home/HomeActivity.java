@@ -1,10 +1,11 @@
-package idoelad.finalproject.tremortouchlauncher.main;
+package idoelad.finalproject.tremortouchlauncher.main.home;
 
+import idoelad.finalproject.core.userparams.UserParamsHandler;
+import idoelad.finalproject.core.userparams.UserParamsHolder;
 import idoelad.finalproject.tremortouchlauncher.R;
-import idoelad.finalproject.tremortouchlauncher.fileshandlers.CirclesFilesHandler;
-import idoelad.finalproject.tremortouchlauncher.fileshandlers.UserParamsHandler;
+import idoelad.finalproject.tremortouchlauncher.main.manual.ManualActivity;
 import idoelad.finalproject.tremortouchlauncher.training.ChooseTestActivity;
-import idoelad.finalproject.tremortouchlauncher.userparams.manual.ManualActivity;
+import idoelad.finalproject.tremortouchlauncher.training.CirclesFilesHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
