@@ -14,5 +14,6 @@
     <string name="time_per_shape">Time Per Shpae (sec):         </string>
     <string name="manual_big_headline">Big-touch Parameters:</string>
     <string name="manual_multi_headline">Multi-touch Parameters:</string>
+    <string name="manual_dev_headline">Deviation Parameters:</string>
     
 </resources>

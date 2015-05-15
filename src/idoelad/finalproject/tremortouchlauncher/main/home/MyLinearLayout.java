@@ -1,6 +1,7 @@
 package idoelad.finalproject.tremortouchlauncher.main.home;
 
 import idoelad.finalproject.core.bigtouch.BigTouch;
+import idoelad.finalproject.core.deviationtouch.DeviationTouch;
 import idoelad.finalproject.core.multitouch.MultiTouch;
 import idoelad.finalproject.core.touch.Circle;
 import idoelad.finalproject.core.touch.Point;
@@ -89,6 +90,8 @@ public class MyLinearLayout extends LinearLayout {
 		int pointerId = MultiTouch.guessFingure(currTouches, UserParamsHolder.upMulti);
 		ArrayList<Touch> filteredTouches = MultiTouch.filterTouchesByFinger(currTouches, pointerId);
 		Circle circle = BigTouch.guessCircleBigTouch(filteredTouches, UserParamsHolder.upBig);
+		double[] newLocation = DeviationTouch.getNewLocation(circle.getCenter().getX(), circle.getCenter().getY(), UserParamsHolder.upDev);
+		circle.setCenter(new Point(newLocation[0], newLocation[1]));
 		simulateAction((float)circle.getCenter().getX(),(float)circle.getCenter().getY(), MotionEvent.ACTION_DOWN); //FIXME casting
 		return circle;
 	}
@@ -127,27 +130,5 @@ public class MyLinearLayout extends LinearLayout {
 			return "UNKNOWN";
 		}
 	}
-
-
-//	@Override
-//	protected void onDraw(Canvas canvas) {
-//		Log.i(LOG_TAG, "onDraw");
-//		if (guessCircle != null && drawGuess){
-//			canvas.save();
-//			canvas.drawColor(Color.CYAN);
-//			Paint p = new Paint();
-//			// smooths
-//			p.setAntiAlias(true);
-//			p.setColor(Color.RED);
-//			p.setStyle(Paint.Style.STROKE); 
-//			p.setStrokeWidth(4.5f);
-//			// opacity
-//			//p.setAlpha(0x80); //
-//			canvas.drawCircle((float)guessCircle.getCenter().getX(),(float) guessCircle.getCenter().getY(), 30, p); //FIXME casting
-//		}
-//		else{
-//			canvas.restore();
-//		}
-//	}
 
 }

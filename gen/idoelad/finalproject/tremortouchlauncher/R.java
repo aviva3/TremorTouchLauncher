@@ -42,9 +42,9 @@ public final class R {
         public static final int touch_point=0x7f020011;
     }
     public static final class id {
-        public static final int app_icon=0x7f08002d;
-        public static final int app_label=0x7f08002e;
-        public static final int btn_save=0x7f080025;
+        public static final int app_icon=0x7f08003e;
+        public static final int app_label=0x7f08003f;
+        public static final int btn_save=0x7f080036;
         public static final int btn_settings=0x7f080005;
         public static final int dock_view=0x7f080007;
         public static final int edgesButton=0x7f080002;
@@ -52,8 +52,8 @@ public final class R {
         public static final int endtestButton=0x7f080003;
         public static final int fixedSizeButton=0x7f080001;
         public static final int grid_view=0x7f080006;
-        public static final int infoLayout=0x7f080027;
-        public static final int manual_adjust=0x7f080030;
+        public static final int infoLayout=0x7f080038;
+        public static final int manual_adjust=0x7f080041;
         public static final int seekBarAvg=0x7f08000a;
         public static final int seekBarDown=0x7f08000d;
         public static final int seekBarFirst=0x7f08001a;
@@ -63,12 +63,17 @@ public final class R {
         public static final int seekBarRadius=0x7f080013;
         public static final int seekBarStructure=0x7f080023;
         public static final int seekBarTime=0x7f080016;
-        public static final int shapeNumberLable=0x7f08002b;
-        public static final int shapeNumberTextView=0x7f08002c;
-        public static final int testZoneLayout=0x7f080026;
+        public static final int seekBarXDev=0x7f080027;
+        public static final int seekBarXWeight=0x7f080031;
+        public static final int seekBarYDev=0x7f08002c;
+        public static final int seekBarYWeight=0x7f080034;
+        public static final int shapeNumberLable=0x7f08003c;
+        public static final int shapeNumberTextView=0x7f08003d;
+        public static final int testZoneLayout=0x7f080037;
         public static final int textViewAvg=0x7f080009;
         public static final int textViewAvgAmount=0x7f08000b;
         public static final int textViewBigHeadline=0x7f080008;
+        public static final int textViewDevHeadline=0x7f080025;
         public static final int textViewDown=0x7f08000c;
         public static final int textViewDownAmount=0x7f08000e;
         public static final int textViewFirst=0x7f080019;
@@ -86,11 +91,23 @@ public final class R {
         public static final int textViewStructureAmount=0x7f080024;
         public static final int textViewTime=0x7f080015;
         public static final int textViewTimeAmount=0x7f080017;
-        public static final int timeLable=0x7f080028;
+        public static final int textViewXDev=0x7f080026;
+        public static final int textViewXDevAmount=0x7f080028;
+        public static final int textViewXWeight=0x7f080030;
+        public static final int textViewXWeightAmount=0x7f080032;
+        public static final int textViewYDev=0x7f08002b;
+        public static final int textViewYDevAmount=0x7f08002d;
+        public static final int textViewYWeight=0x7f080033;
+        public static final int textViewYWeightAmount=0x7f080035;
+        public static final int timeLable=0x7f080039;
         public static final int timePerShape=0x7f080000;
-        public static final int timeTextView=0x7f080029;
-        public static final int touchPoint=0x7f08002a;
-        public static final int training=0x7f08002f;
+        public static final int timeTextView=0x7f08003a;
+        public static final int touchPoint=0x7f08003b;
+        public static final int training=0x7f080040;
+        public static final int xDevSignMinus=0x7f08002a;
+        public static final int xDevSignPlus=0x7f080029;
+        public static final int yDevSignMinus=0x7f08002f;
+        public static final int yDevSignPlus=0x7f08002e;
     }
     public static final class layout {
         public static final int activity_choose_test=0x7f030000;
@@ -108,6 +125,7 @@ public final class R {
         public static final int btn_settings=0x7f050005;
         public static final int init_text=0x7f050001;
         public static final int manual_big_headline=0x7f05000b;
+        public static final int manual_dev_headline=0x7f05000d;
         public static final int manual_multi_headline=0x7f05000c;
         public static final int settings_manual=0x7f050004;
         public static final int settings_training=0x7f050003;
