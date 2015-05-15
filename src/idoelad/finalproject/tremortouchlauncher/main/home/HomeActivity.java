@@ -131,7 +131,7 @@ public class HomeActivity extends Activity {
 
 		// Create userParams
 		try {
-			UserParamsHandler.initUserParamsFiles(appFolder);
+			UserParamsHandler.initUserParamsFiles();
 		} catch (IOException e) {
 			Log.e(LOG_TAG, "Unable to init user params: " + e.getMessage());
 		}
