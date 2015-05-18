@@ -19,8 +19,9 @@ import android.widget.LinearLayout;
 
 public class MyLinearLayout extends LinearLayout {
 	private static final String LOG_TAG = "TremorTouchLauncher";
+	private static final String LOG_TOUCH_FLOW = HomeActivity.LOG_TOUCH_FLOW;
 
-	private ArrayList<Touch> currTouches;
+	public static ArrayList<Touch> currTouches;
 	private static boolean isSyntetic = false;
 	private static boolean isAfterUp = false;
 	private Circle guessCircle;
@@ -45,6 +46,7 @@ public class MyLinearLayout extends LinearLayout {
 
 		if (MotionEvent.ACTION_DOWN == e.getAction()) {
 			if (!isSyntetic){
+				Log.i(LOG_TOUCH_FLOW,"Real (first) Touch is at: "+e.getRawX()+","+e.getRawY());
 				currTouches = new ArrayList<Touch>();
 				firstEventTime = e.getEventTime();
 				currTouches.add(eventToTouch(e));
@@ -59,6 +61,9 @@ public class MyLinearLayout extends LinearLayout {
 		}
 
 		else if (MotionEvent.ACTION_UP == e.getAction()) {
+			if (e.getPointerCount() == 1){
+
+			}
 			if (!isAfterUp){
 				//Create touch (DOWN) according to user's params
 				isSyntetic = true;
@@ -92,6 +97,7 @@ public class MyLinearLayout extends LinearLayout {
 		Circle circle = BigTouch.guessCircleBigTouch(filteredTouches, UserParamsHolder.upBig);
 		double[] newLocation = DeviationTouch.getNewLocation(circle.getCenter().getX(), circle.getCenter().getY(), UserParamsHolder.upDev);
 		circle.setCenter(new Point(newLocation[0], newLocation[1]));
+        Log.i(LOG_TOUCH_FLOW,"Fake touch is at: "+circle.getCenter().getX()+","+circle.getCenter().getY());
 		simulateAction((float)circle.getCenter().getX(),(float)circle.getCenter().getY(), MotionEvent.ACTION_DOWN); //FIXME casting
 		return circle;
 	}

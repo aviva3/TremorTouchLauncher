@@ -1,5 +1,16 @@
 package idoelad.finalproject.tremortouchlauncher.main.home;
 
+import idoelad.finalproject.core.bigtouch.BigTouch;
+import idoelad.finalproject.core.bigtouch.UserParamsBigTouch;
+import idoelad.finalproject.core.deviationtouch.DeviationTouch;
+import idoelad.finalproject.core.deviationtouch.TargertNGuess;
+import idoelad.finalproject.core.deviationtouch.UserParamsDeviationTouch;
+import idoelad.finalproject.core.multitouch.MultiTouch;
+import idoelad.finalproject.core.multitouch.UserParamsMultiTouch;
+import idoelad.finalproject.core.touch.Circle;
+import idoelad.finalproject.core.touch.Point;
+import idoelad.finalproject.core.touch.Test;
+import idoelad.finalproject.core.touch.Touch;
 import idoelad.finalproject.core.userparams.UserParamsHandler;
 import idoelad.finalproject.core.userparams.UserParamsHolder;
 import idoelad.finalproject.tremortouchlauncher.R;
@@ -27,8 +38,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -44,6 +57,7 @@ import android.widget.TextView;
 public class HomeActivity extends Activity {
 
 	private static final String LOG_TAG = "TremorTouchLauncher";
+	public static final String LOG_TOUCH_FLOW = "Touch Flow";
 	public static String APP_NAME;
 
 	private static final HashSet<String> DEFAULT_DOCK_APPS = new HashSet<String>(
@@ -51,6 +65,9 @@ public class HomeActivity extends Activity {
 	private ArrayList<LaunchableAppInfo> mApplications;
 	private ArrayList<LaunchableAppInfo> mDockedApplications;
 	public static GridView gridView;
+	
+	protected float guessX;
+	protected float guessY;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -206,18 +223,71 @@ public class HomeActivity extends Activity {
 	}
 
 	private void bindApps() {
-
+		
 		gridView = (GridView) findViewById(R.id.grid_view);
 		gridView.setAdapter(new ImageArrayAdapter(this, mApplications));
+		
+		gridView.setOnTouchListener(new OnTouchListener() {	
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getActionMasked() == MotionEvent.ACTION_DOWN){
+					Log.i(LOG_TOUCH_FLOW,"Grid touch is at: "+event.getRawX()+","+event.getRawY());
+					guessX = event.getRawX();
+					guessY = event.getRawY();
+				}
+				return false;
+			}
+		});
+		
 		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
-				LaunchableAppInfo info = (LaunchableAppInfo) parent
+				
+				//Find Item coordinates in grid
+				int[] itemTopLeft = new int[2]; 
+		        v.getLocationOnScreen(itemTopLeft);
+		        int itemWidth = v.getMeasuredWidth();
+		        int itemHeight = v.getMeasuredHeight();
+		        int itemCenterX = itemTopLeft[0] + itemWidth/2;
+		        int itemCenterY = itemTopLeft[1] + itemHeight/2;
+		        Log.i(LOG_TOUCH_FLOW,"Item is at: "+itemCenterX+","+itemCenterY+" {["+itemTopLeft[0]+","+(itemTopLeft[0]+itemWidth)+"] X ["+itemTopLeft[1]+","+(itemTopLeft[1]+itemHeight)+"]}");
+				
+		        //Launch applictaion
+		        LaunchableAppInfo info = (LaunchableAppInfo) parent
 						.getItemAtPosition(position);
 				startActivity(info.intent);
+				
+				//Adjust userParams according to fake touch and item location
+				trainUserParams(itemCenterX, itemCenterY, itemWidth, itemHeight);
 			}
 		});
 
+	}
+	
+	private void trainUserParams(int itemCenterX, int itemCenterY, int itemWidth, int itemHeight){
+		Log.i(LOG_TOUCH_FLOW,"Training. item: ("+itemCenterX+","+itemCenterY+") | guess: ("+guessX+","+guessY+")");
+		int radius = itemWidth < itemHeight ? itemWidth/2 : itemHeight/2;
+		Circle target = new Circle(new Point(itemCenterX, itemCenterY), radius);
+		ArrayList<Touch> touches = new ArrayList<Touch>(MyLinearLayout.currTouches);
+		updateUserParams(touches, target);
+	}
+	
+	private void updateUserParams(ArrayList<Touch> touches, Circle target){
+		ArrayList<Test> tests = new ArrayList<Test>();
+		Test t = new Test(target);
+		t.setTouches(touches);
+		tests.add(t);
+		UserParamsBigTouch upBig = BigTouch.getBigTouchParams(tests);
+		UserParamsMultiTouch upMulti = MultiTouch.getMultiTouchParams(tests);
+		
+		ArrayList<TargertNGuess> tngs = new ArrayList<TargertNGuess>();
+		tngs.add(new TargertNGuess(target, new Circle(new Point(guessX, guessY), 30)));
+		UserParamsDeviationTouch upDev = DeviationTouch.getDeviationTouchParams(tngs);	
+		try {
+			UserParamsHandler.updateUserParamsFromTraining(upBig, upMulti, upDev, 0.01);
+		} catch (IOException e) {
+			Toast.makeText(getApplicationContext(), "Cannot update user parameters on live training.", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private void bindDockedApps() {
